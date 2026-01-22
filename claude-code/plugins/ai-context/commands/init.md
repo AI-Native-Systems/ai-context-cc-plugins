@@ -82,11 +82,19 @@ After gathering information, generate the `.ai-context` file with:
 - Testing configuration
 - History tracking
 
-### Hook Setup
+### Hook Setup (REQUIRED)
 
-Set up auto-loading via:
-1. SessionStart hook in `.claude/settings.json`
-2. Reference in `CLAUDE.md` (fallback for other AI tools)
+**CRITICAL: Always create a PROJECT-LEVEL hook. Do NOT skip this step.**
+
+Global hooks (in `~/.claude/`) are IRRELEVANT - they don't load project-specific context.
+CLAUDE.md existence is IRRELEVANT - it doesn't auto-load `.ai-context`.
+
+You MUST:
+1. Check if `.claude/settings.json` exists **in the project directory**
+2. Create or merge SessionStart hook to `cat .ai-context`
+3. Update `CLAUDE.md` as fallback for non-Claude-Code tools
+
+**The hook setup is NOT optional. Context that isn't loaded is useless.**
 
 ## Guidelines
 

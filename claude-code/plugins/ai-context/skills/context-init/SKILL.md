@@ -147,10 +147,43 @@ history:
 
 ### Hook Setup (Auto-load Context)
 
-After writing `.ai-context`, set up auto-loading:
+**CRITICAL: Always create a PROJECT-LEVEL hook. Do NOT skip this step.**
 
-1. Create or merge `.claude/settings.json` with SessionStart hook
-2. Update or create `CLAUDE.md` as fallback
+Global hooks (in `~/.claude/`) are IRRELEVANT - they don't load project-specific context.
+CLAUDE.md existence is IRRELEVANT - it doesn't auto-load `.ai-context`.
+
+After writing `.ai-context`, you MUST:
+
+1. **Check for PROJECT-LEVEL settings** (not global):
+   ```bash
+   [ -f .claude/settings.json ] && echo "exists" || echo "missing"
+   ```
+
+2. **Create `.claude/settings.json`** if it doesn't exist:
+   ```json
+   {
+     "hooks": {
+       "SessionStart": [
+         {
+           "hooks": [
+             {
+               "type": "command",
+               "command": "cat .ai-context"
+             }
+           ]
+         }
+       ]
+     }
+   }
+   ```
+
+3. **Merge into existing** `.claude/settings.json` if it exists - add the SessionStart hook without removing other settings.
+
+4. **Update CLAUDE.md** as fallback for non-Claude-Code tools:
+   - If exists: Add reference to `.ai-context` at the top
+   - If missing: Create minimal CLAUDE.md pointing to `.ai-context`
+
+**The hook setup is NOT optional. Context that isn't loaded is useless.**
 
 ## Execution Guidelines
 
