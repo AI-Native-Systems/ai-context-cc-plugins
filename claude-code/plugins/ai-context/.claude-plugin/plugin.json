@@ -1,0 +1,36 @@
+{
+  "name": "ai-context",
+  "version": "1.0.0",
+  "description": "Claude Code plugin to generate and manage .ai-context files for AI-assisted development. Three skills: context-init (create context files for new or existing projects), context-update (keep context synced with codebase changes), context-digest (generate human-readable markdown summaries for team onboarding).",
+  "author": {
+    "name": "Patrick Pena"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/agenisea/ai-context-cc-plugins",
+  "repository": "https://github.com/agenisea/ai-context-cc-plugins",
+  "keywords": [
+    "claude-code",
+    "ai-context",
+    "developer-tools",
+    "context-management",
+    "project-context",
+    "ai-assisted-development",
+    "codebase-context",
+    "domain-knowledge",
+    "conventions",
+    "onboarding",
+    "documentation",
+    "yaml",
+    "schema",
+    "inference",
+    "automation",
+    "developer-experience",
+    "team-collaboration",
+    "code-intelligence"
+  ],
+  "commands": [
+    "./commands/init.md",
+    "./commands/update.md",
+    "./commands/digest.md"
+  ]
+}

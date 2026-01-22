@@ -1,0 +1,451 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AI Context Schema",
+  "description": "Schema for .ai-context files that provide structured metadata for AI-assisted development",
+  "$defs": {
+    "ComponentInfo": {
+      "type": "object",
+      "description": "Component status and metadata",
+      "required": ["name", "status"],
+      "properties": {
+        "name": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["stable", "unstable", "deprecated", "experimental"]
+        },
+        "description": { "type": "string" },
+        "notes": { "type": "string" },
+        "prefer": {
+          "type": "string",
+          "description": "Alternative component to use instead"
+        }
+      }
+    },
+    "DirectoryContext": {
+      "type": "object",
+      "description": "Per-directory context for subdirectories (placed in subdirectory/.ai-context)",
+      "required": ["version"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "1.0"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Purpose of this directory"
+        },
+        "conventions": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Directory-specific conventions"
+        },
+        "components": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/ComponentInfo" },
+          "description": "Components in this directory"
+        },
+        "exports": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Public exports from this directory"
+        },
+        "internal": {
+          "type": "boolean",
+          "description": "Whether this directory is internal/private"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes about this directory"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Schema version"
+    },
+    "project": {
+      "type": "object",
+      "description": "Basic project information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief project description"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["web-app", "api", "cli", "library", "mobile-app", "desktop-app", "monorepo", "microservices", "other"],
+          "description": "Project type"
+        },
+        "stack": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Technology stack"
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "description": "Repository URL"
+        },
+        "documentation": {
+          "type": "string",
+          "description": "Documentation URL or path"
+        }
+      },
+      "required": ["name", "type", "stack"]
+    },
+    "domain": {
+      "type": "object",
+      "description": "Domain-specific knowledge",
+      "properties": {
+        "industry": {
+          "type": "string",
+          "description": "Industry or domain area"
+        },
+        "terms": {
+          "type": "array",
+          "description": "Domain-specific terminology",
+          "items": {
+            "type": "object",
+            "required": ["term", "meaning"],
+            "properties": {
+              "term": {
+                "type": "string",
+                "description": "The domain term"
+              },
+              "meaning": {
+                "type": "string",
+                "description": "What this term means in your project"
+              },
+              "not": {
+                "type": "string",
+                "description": "Common misconception to avoid"
+              },
+              "aliases": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Alternative names for this term"
+              },
+              "see_also": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Related terms"
+              }
+            }
+          }
+        },
+        "entities": {
+          "type": "array",
+          "description": "Core domain entities",
+          "items": {
+            "type": "object",
+            "required": ["name", "description"],
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "key_fields": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "relationships": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "description": "Project structure and conventions",
+      "properties": {
+        "entrypoints": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Key entry point files"
+        },
+        "conventions": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Path patterns for different file types",
+          "properties": {
+            "components": { "type": "string" },
+            "hooks": { "type": "string" },
+            "services": { "type": "string" },
+            "api_routes": { "type": "string" },
+            "models": { "type": "string" },
+            "tests": { "type": "string" },
+            "utils": { "type": "string" },
+            "types": { "type": "string" }
+          }
+        },
+        "layers": {
+          "type": "array",
+          "description": "Architectural layers",
+          "items": {
+            "type": "object",
+            "required": ["name", "path"],
+            "properties": {
+              "name": { "type": "string" },
+              "path": { "type": "string" },
+              "description": { "type": "string" },
+              "depends_on": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "depended_by": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Layers that depend on this one"
+              }
+            }
+          }
+        },
+        "modules": {
+          "type": "array",
+          "description": "Module definitions",
+          "items": {
+            "type": "object",
+            "required": ["name", "path"],
+            "properties": {
+              "name": { "type": "string" },
+              "path": { "type": "string" },
+              "description": { "type": "string" },
+              "public_api": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "internal": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "description": "Development preferences and tooling choices",
+      "properties": {
+        "state_management": { "type": "string" },
+        "styling": { "type": "string" },
+        "forms": { "type": "string" },
+        "testing": { "type": "string" },
+        "http_client": { "type": "string" },
+        "orm": { "type": "string" },
+        "code_style": {
+          "type": "object",
+          "properties": {
+            "naming": {
+              "type": "string",
+              "enum": ["camelCase", "snake_case", "PascalCase", "kebab-case"]
+            },
+            "quotes": {
+              "type": "string",
+              "enum": ["single", "double"]
+            },
+            "semicolons": { "type": "boolean" },
+            "indent": {
+              "oneOf": [
+                { "type": "integer", "minimum": 1 },
+                { "type": "string", "const": "tab" }
+              ]
+            },
+            "max_line_length": { "type": "integer" },
+            "comments": {
+              "type": "string",
+              "enum": ["jsdoc", "inline", "minimal"]
+            }
+          }
+        },
+        "avoid": {
+          "type": "array",
+          "description": "Patterns and libraries to avoid",
+          "items": {
+            "type": "object",
+            "required": ["pattern", "reason"],
+            "properties": {
+              "pattern": { "type": "string" },
+              "reason": { "type": "string" },
+              "alternative": { "type": "string" }
+            }
+          }
+        },
+        "prefer": {
+          "type": "array",
+          "description": "Preferred patterns",
+          "items": {
+            "type": "object",
+            "required": ["pattern", "reason"],
+            "properties": {
+              "pattern": { "type": "string" },
+              "reason": { "type": "string" },
+              "example": { "type": "string" }
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "active_work": {
+      "type": "array",
+      "description": "Areas currently being worked on or with special status",
+      "items": {
+        "type": "object",
+        "required": ["area", "status"],
+        "properties": {
+          "area": { "type": "string" },
+          "path": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["in_progress", "blocked", "frozen", "deprecated"]
+          },
+          "description": { "type": "string" },
+          "contact": { "type": "string" },
+          "until": { "type": "string" }
+        }
+      }
+    },
+    "caution": {
+      "type": "array",
+      "description": "Areas requiring extra care",
+      "items": {
+        "type": "object",
+        "required": ["reason"],
+        "properties": {
+          "path": { "type": "string" },
+          "pattern": { "type": "string" },
+          "reason": { "type": "string" },
+          "severity": {
+            "type": "string",
+            "enum": ["info", "warning", "critical"],
+            "default": "warning"
+          },
+          "requires": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Component dependency mapping",
+      "items": {
+        "type": "object",
+        "required": ["component"],
+        "properties": {
+          "component": { "type": "string" },
+          "path": { "type": "string" },
+          "uses": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "used_by": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "api": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "events": {
+            "type": "object",
+            "description": "Event-based dependencies",
+            "properties": {
+              "emits": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Events this component emits"
+              },
+              "listens": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Events this component listens to"
+              }
+            }
+          }
+        }
+      }
+    },
+    "testing": {
+      "type": "object",
+      "description": "Testing configuration",
+      "properties": {
+        "framework": { "type": "string" },
+        "run_command": { "type": "string" },
+        "coverage_target": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "patterns": {
+          "type": "object",
+          "properties": {
+            "unit": { "type": "string" },
+            "integration": { "type": "string" },
+            "e2e": { "type": "string" }
+          }
+        },
+        "fixtures": { "type": "string" },
+        "mocks": { "type": "string" }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "description": "Deployment configuration",
+      "properties": {
+        "environments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": { "type": "string" },
+              "url": { "type": "string" },
+              "branch": { "type": "string" },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "ci_cd": { "type": "string" },
+        "infrastructure": { "type": "string" },
+        "secrets_location": { "type": "string" }
+      }
+    },
+    "history": {
+      "type": "object",
+      "description": "Context file metadata",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date"
+        },
+        "major_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["date", "description"],
+            "properties": {
+              "date": { "type": "string" },
+              "description": { "type": "string" },
+              "breaking": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
