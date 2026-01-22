@@ -1,3 +1,5 @@
+![AI Context Plugin](assets/logo.png)
+
 # AI Context Plugin for Claude Code
 
 **Generate and manage `.ai-context` files for AI-assisted development.**
