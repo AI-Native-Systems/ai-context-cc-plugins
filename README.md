@@ -27,7 +27,7 @@ The AI Context Plugin creates and maintains `.ai-context` files - structured YAM
 
 ```bash
 # Add the marketplace
-/plugin marketplace add ans/ai-context-plugin
+/plugin marketplace add AI-Native-Systems/ai-context-cc-plugins
 
 # Install the plugin
 /plugin install ai-context@ans
@@ -173,7 +173,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-Built for the [ans marketplace](https://github.com/agenisea/ai-context-cc-plugins)
+Built for the [ans marketplace](https://github.com/AI-Native-Systems/ai-context-cc-plugins)
 
 ---
 

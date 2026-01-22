@@ -13,7 +13,7 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/agenisea/ai-context-cc-plugins.git
+   git clone https://github.com/AI-Native-Systems/ai-context-cc-plugins.git
    cd ai-context-plugin
    ```
 
