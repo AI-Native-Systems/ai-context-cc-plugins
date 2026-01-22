@@ -1,6 +1,6 @@
 {
   "name": "ai-context-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code plugin to generate and manage .ai-context files for AI-assisted development. Three skills: context-init (create context files), context-update (keep context synced), context-digest (generate human-readable summaries).",
   "keywords": [
     "claude-code",

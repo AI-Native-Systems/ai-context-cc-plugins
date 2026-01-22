@@ -1,6 +1,6 @@
 {
   "name": "ai-context",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Claude Code plugin to generate and manage .ai-context files for AI-assisted development. Three skills: context-init (create context files for new or existing projects), context-update (keep context synced with codebase changes), context-digest (generate human-readable markdown summaries for team onboarding).",
   "author": {
     "name": "Patrick Pena"

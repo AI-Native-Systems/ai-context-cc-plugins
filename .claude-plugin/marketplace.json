@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "AI Context Plugin - Generate and manage .ai-context files for AI-assisted development",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "repository": "https://github.com/agenisea/ai-context-cc-plugins"
   },
   "plugins": [
@@ -13,7 +13,7 @@
       "name": "ai-context",
       "source": "./claude-code/plugins/ai-context",
       "description": "Claude Code plugin to generate and manage .ai-context files for AI-assisted development. Three skills: context-init (create context files), context-update (keep context synced), context-digest (generate human-readable summaries).",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "Patrick Pena"
       },
